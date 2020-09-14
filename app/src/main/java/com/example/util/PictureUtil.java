@@ -33,35 +33,37 @@ public class PictureUtil {
             }
         }
     };
-    public void load(ImageView imageView,String imageUrl){
-        this.imageView=imageView;
-        this.imageUrl=imageUrl;
-        Drawable drawable=imageView.getDrawable();
-        if (drawable != null&&drawable instanceof BitmapDrawable) {
-            Bitmap bitmap= ((BitmapDrawable) drawable).getBitmap();
-            if (bitmap != null&&!bitmap.isRecycled()) {
-        bitmap.recycle();
+
+    public void load(ImageView imageView, String imageUrl) {
+        this.imageView = imageView;
+        this.imageUrl = imageUrl;
+        Drawable drawable = imageView.getDrawable();
+        if (drawable != null && drawable instanceof BitmapDrawable) {
+            Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
+            if (bitmap != null && !bitmap.isRecycled()) {
+                bitmap.recycle();
             }
         }
         new Thread(runnable).start();
     }
-    Runnable runnable =new Runnable() {
+
+    Runnable runnable = new Runnable() {
         @Override
         public void run() {
             try {
-                URL url=new URL(imageUrl);
-                HttpURLConnection connection= (HttpURLConnection) url.openConnection();
+                URL url = new URL(imageUrl);
+                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                 connection.setRequestMethod("GET");
                 connection.setConnectTimeout(10000);
-                if (connection.getResponseCode()==200) {
-                    InputStream inputStream=connection.getInputStream();
-                    ByteArrayOutputStream out=new ByteArrayOutputStream();
-                    byte[]bytes=new byte[1024];
-                    int length=-1;
+                if (connection.getResponseCode() == 200) {
+                    InputStream inputStream = connection.getInputStream();
+                    ByteArrayOutputStream out = new ByteArrayOutputStream();
+                    byte[] bytes = new byte[1024];
+                    int length = -1;
                     while ((length = inputStream.read(bytes)) != -1) {
-            out.write(bytes,0,length);
+                        out.write(bytes, 0, length);
                     }
-                    imageByte=out.toByteArray();
+                    imageByte = out.toByteArray();
                     inputStream.close();
                     out.close();
                     handler.sendEmptyMessage(0x123);
