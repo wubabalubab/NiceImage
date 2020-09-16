@@ -10,6 +10,8 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.example.adapter.ImageRvAdapter;
+import com.example.bean.ImageBean;
 import com.example.textview.R;
 import com.example.util.PictureUtil;
 
@@ -25,17 +27,12 @@ import butterknife.Unbinder;
  * A simple {@link Fragment} subclass.
  */
 public class FirstFragment extends Fragment {
-    @BindView(R.id.im_fg_first)
-    ImageView imFgFirst;
-    @BindView(R.id.tv_fg_first)
-    TextView tvFgFirst;
-    private List<String> urls;
+
+    private List<ImageBean> mList;
     private int index=0;
     PictureUtil pictureUtil;
-
     Unbinder unbinder;
-    public FirstFragment() {
-    }
+    ImageRvAdapter mAdapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -61,25 +58,7 @@ public class FirstFragment extends Fragment {
     }
 
     private void initData() {
-        urls = new ArrayList<>();
-        urls.add("http://ww4.sinaimg.cn/large/610dc034jw1f6ipaai7wgj20dw0kugp4.jpg");
-        urls.add("http://ww3.sinaimg.cn/large/610dc034jw1f6gcxc1t7vj20hs0hsgo1.jpg");
-        urls.add("http://ww4.sinaimg.cn/large/610dc034jw1f6f5ktcyk0j20u011hacg.jpg");
-        urls.add("http://ww1.sinaimg.cn/large/610dc034jw1f6e1f1qmg3j20u00u0djp.jpg");
-        urls.add("http://ww3.sinaimg.cn/large/610dc034jw1f6aipo68yvj20qo0qoaee.jpg");
-        urls.add("http://ww3.sinaimg.cn/large/610dc034jw1f69c9e22xjj20u011hjuu.jpg");
-        urls.add("http://ww3.sinaimg.cn/large/610dc034jw1f689lmaf7qj20u00u00v7.jpg");
-        urls.add("http://ww3.sinaimg.cn/large/c85e4a5cjw1f671i8gt1rj20vy0vydsz.jpg");
-        urls.add("http://ww2.sinaimg.cn/large/610dc034jw1f65f0oqodoj20qo0hntc9.jpg");
-        urls.add("http://ww2.sinaimg.cn/large/c85e4a5cgw1f62hzfvzwwj20hs0qogpo.jpg");
+
     }
 
-    @OnClick(R.id.tv_fg_first)
-    public void onViewClicked() {
-        if (index>9) {
-            index=0;
-        }
-        pictureUtil.load(imFgFirst,urls.get(index));
-        index++;
-    }
 }
