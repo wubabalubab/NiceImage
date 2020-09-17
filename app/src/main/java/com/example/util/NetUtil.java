@@ -1,5 +1,7 @@
 package com.example.util;
 
+import android.util.Log;
+
 import com.example.bean.ImageBean;
 import com.example.common.Constant;
 
@@ -50,7 +52,7 @@ public class NetUtil {
         ArrayList<ImageBean> imageList = new ArrayList<>();
         try {
             JSONObject json = new JSONObject(data);
-            JSONArray array = new JSONArray("data");
+            JSONArray array = json.getJSONArray("data");
             for (int i = 0; i < array.length(); i++) {
                 ImageBean bean = new ImageBean();
                 JSONObject material= (JSONObject) array.get(i);
@@ -66,6 +68,7 @@ public class NetUtil {
                 bean.setType(material.getString("type"));
                 bean.setUrl(material.getString("url"));
                 bean.setViews(material.getInt("views"));
+                imageList.add(bean);
             }
         } catch (JSONException e) {
             e.printStackTrace();

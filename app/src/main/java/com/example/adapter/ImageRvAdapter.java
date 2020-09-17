@@ -1,6 +1,7 @@
 package com.example.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,13 +13,16 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.bean.ImageBean;
 import com.example.textview.R;
+import com.example.util.PictureUtil;
 
 import java.util.ArrayList;
 
 
 public class ImageRvAdapter extends RecyclerView.Adapter<ImageRvAdapter.ViewHolder> {
+    private static final String TAG = "ImageRvAdapter";
     Context context;
     ArrayList<ImageBean> imageList = new ArrayList<>();
+    PictureUtil pictureUtil=new PictureUtil();
 
     public ImageRvAdapter(Context context, ArrayList<ImageBean> imageList) {
         this.context = context;
@@ -34,6 +38,9 @@ public class ImageRvAdapter extends RecyclerView.Adapter<ImageRvAdapter.ViewHold
     @Override
     public void onBindViewHolder(@NonNull ImageRvAdapter.ViewHolder holder, int position) {
             holder.title.setText(imageList.get(position).getTitle());
+        Log.e(TAG, "onBindViewHolder: "+imageList.get(position).getUrl());
+            pictureUtil.load(holder.image,imageList.get(position).getUrl());
+
     }
 
     @Override
