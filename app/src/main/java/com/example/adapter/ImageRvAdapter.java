@@ -11,6 +11,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.bean.ImageBean;
 import com.example.textview.R;
 import com.example.util.PictureUtil;
@@ -22,7 +23,7 @@ public class ImageRvAdapter extends RecyclerView.Adapter<ImageRvAdapter.ViewHold
     private static final String TAG = "ImageRvAdapter";
     Context context;
     ArrayList<ImageBean> imageList = new ArrayList<>();
-    PictureUtil pictureUtil=new PictureUtil();
+    PictureUtil pictureUtil;
 
     public ImageRvAdapter(Context context, ArrayList<ImageBean> imageList) {
         this.context = context;
@@ -32,15 +33,17 @@ public class ImageRvAdapter extends RecyclerView.Adapter<ImageRvAdapter.ViewHold
     @NonNull
     @Override
     public ImageRvAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new ViewHolder(LayoutInflater.from(context).inflate(R.layout.item_rv_fg_first,parent,false));
+        return new ViewHolder(LayoutInflater.from(context).inflate(R.layout.item_rv_fg_first, parent, false));
     }
 
     @Override
     public void onBindViewHolder(@NonNull ImageRvAdapter.ViewHolder holder, int position) {
-            holder.title.setText(imageList.get(position).getTitle());
-        Log.e(TAG, "onBindViewHolder: "+imageList.get(position).getUrl());
-            pictureUtil.load(holder.image,imageList.get(position).getUrl());
-
+        pictureUtil = new PictureUtil();
+        holder.title.setText(imageList.get(position).getTitle());
+        Log.e(TAG, "onBindViewHolder: " + imageList.get(position).getUrl());
+        holder.image.setBackgroundResource(R.drawable.ic_launcher_foreground);
+//        pictureUtil.load(holder.image, imageList.get(position).getUrl());
+        Glide.with(context).load(imageList.get(position).getUrl()).into(holder.image);
     }
 
     @Override
@@ -51,10 +54,11 @@ public class ImageRvAdapter extends RecyclerView.Adapter<ImageRvAdapter.ViewHold
     public class ViewHolder extends RecyclerView.ViewHolder {
         ImageView image;
         TextView title;
+
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            image=itemView.findViewById(R.id.item_im_fg_first);
-            title=itemView.findViewById(R.id.item_tv_fg_first_title);
+            image = itemView.findViewById(R.id.item_im_fg_first);
+            title = itemView.findViewById(R.id.item_tv_fg_first_title);
         }
     }
 }

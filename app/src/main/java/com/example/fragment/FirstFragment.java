@@ -33,12 +33,12 @@ public class FirstFragment extends Fragment {
     @BindView(R.id.rv_fg_first_main)
     RecyclerView rvFgFirstMain;
     private ArrayList<ImageBean> mList=new ArrayList<>();
-    private int index = 0;
+    private int index = 1;
     private PictureUtil pictureUtil;
     private Unbinder unbinder;
     private ImageRvAdapter mAdapter;
     private NetUtil netUtil;
-    private ImageTask imageTask=new ImageTask();
+    private ImageTask imageTask;
     private static final String TAG = "FirstFragment";
 
     @Override
@@ -72,6 +72,7 @@ public class FirstFragment extends Fragment {
         netUtil = new NetUtil();
         pictureUtil = new PictureUtil();
         // Cannot execute task: the task is already running. oor
+        imageTask=new ImageTask();
         imageTask.execute();
     }
 
@@ -94,6 +95,9 @@ public class FirstFragment extends Fragment {
             Log.e(TAG, "onPostExecute: "+mList.toString());
             mAdapter=new ImageRvAdapter(getContext(),mList);
             rvFgFirstMain.setAdapter(mAdapter);
+//            if (rvFgFirstMain.getRecycledViewPool() != null) {
+//                rvFgFirstMain.getRecycledViewPool().setMaxRecycledViews(0,10);
+//            }
         }
 
         @Override

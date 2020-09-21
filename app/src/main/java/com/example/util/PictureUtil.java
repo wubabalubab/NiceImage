@@ -6,6 +6,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
@@ -20,6 +21,7 @@ public class PictureUtil {
     private static ImageView imageView;
     private static String imageUrl;
     private static byte[] imageByte;
+    private static final String TAG = "PictureUtil";
 
     static Handler handler = new Handler() {
         @Override
@@ -38,7 +40,7 @@ public class PictureUtil {
         this.imageView = imageView;
         this.imageUrl = imageUrl;
         Drawable drawable = imageView.getDrawable();
-        if (drawable != null && drawable instanceof BitmapDrawable) {
+        if (drawable instanceof BitmapDrawable) {
             Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
             if (bitmap != null && !bitmap.isRecycled()) {
                 bitmap.recycle();
@@ -54,7 +56,13 @@ public class PictureUtil {
                 URL url = new URL(imageUrl);
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                 connection.setRequestMethod("GET");
-                connection.setConnectTimeout(10000);
+                connection.setConnectTimeout(30000);
+                connection.setInstanceFollowRedirects(true);
+
+                if (connection.getResponseCode()==302) {
+                    imageUrl = connection.getHeaderField("Location");
+                }
+                Log.e(TAG, "run: "+url);
                 if (connection.getResponseCode() == 200) {
                     InputStream inputStream = connection.getInputStream();
                     ByteArrayOutputStream out = new ByteArrayOutputStream();
@@ -67,6 +75,7 @@ public class PictureUtil {
                     inputStream.close();
                     out.close();
                     handler.sendEmptyMessage(0x123);
+                    Log.e(TAG, "run: success"+imageByte.length);
                 }
             } catch (Exception e) {
                 e.printStackTrace();
